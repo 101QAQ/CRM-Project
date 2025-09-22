@@ -1,0 +1,147 @@
+import { createRouter,createWebHistory } from "vue-router";
+import LoginPage from "../view/LoginPage.vue";
+import workbenchMain from "@/view/workbenchMain.vue";
+const router=createRouter({
+
+    history:createWebHistory(),
+    routes:[
+        {
+            path:"/",
+            name:'loginPage',
+            component:LoginPage,
+            meta:{isLogin:true},
+        },
+        {
+            path:'/workbenchMain',
+            name:'pageHome',
+            component:workbenchMain,
+            
+            children:[
+                {
+                    path:'userList',
+                    name:'user',
+                    component:()=>import('../view/userPage.vue')
+                },
+                {
+                    path:'details/:id',
+                    name:'userDetails',
+                    component:()=>import('../view/userDetails.vue'),
+                },
+                {
+                    path:'activity',
+                    name:'activity',
+                    component:()=>import('../view/activityPage.vue')
+                },
+                {
+                    path:'activityDetails/:id',
+                    name:'activityDetails',
+                    component:()=>import('../view/activityDetails.vue')
+                },
+                {
+                    path:'addActivity',
+                    name:'addActivity',
+                    component:()=>import("../view/activitiRecode.vue")
+                },
+                {
+                    path:'editActivity/:id',
+                    name:'editActivity',
+                    component:()=>import("../view/activitiRecode.vue")
+                },
+                {
+                    path:'cluePage',
+                    name:'clue',
+                    component:()=>import("../view/cluePage.vue")
+                },
+                {
+                    path:'addClue',
+                    name:'addClue',
+                    component:()=>import("../view/clueRecode.vue")
+                },
+                {
+                    path:'editClue/:id',
+                    name:'editClue',
+                    component:()=>import("../view/clueRecode.vue")
+                },
+                {
+                    path:'clueDetails/:id',
+                    name:'clueDetails',
+                    component:()=>import("../view/clueDetails.vue")
+                },
+                {
+                    path:'customerPage',
+                    name:'customerPage',
+                    component:()=>import("../view/customer.vue")
+                },
+                {
+                    path:'statistic',
+                    name:'statistic',
+                    component:()=>import("../view/summaryData.vue")
+                },
+                {
+                    path:'myDetails/:id',
+                    name:'myDetails',
+                    component:()=>import('../view/MyDetails.vue')
+                },
+                {
+                    path:'customerDetails/:id',
+                    name:'customerDetails',
+                    component:()=>import('../view/customerDetails.vue')
+                },
+                {
+                    path:'tran',
+                    name:'tran',
+                    component:()=>import('../view/tranPage.vue')
+                },
+                {
+                    path:'tranDetails/:id',
+                    name:'tranDetails',
+                    component:()=>import('../view/tranDetails.vue')
+                },
+                {
+                    path:'system',
+                    name:'system',
+                    component:()=>import('../view/systemControl.vue')
+                },
+                {
+                    path:'systemPermission',
+                    name:'systemPermission',
+                    component:()=>import('../view/systemPermission.vue')
+                },
+                {
+                    path:'product',
+                    name:'product',
+                    component:()=>import('../view/products.vue')
+                },
+                {
+                    path:'productDetails/:id',
+                    name:'productDetails',
+                    component:()=>import('../view/productDetails.vue')
+                },
+                {
+                    path:'dicvalue',
+                    name:'dicvalue',
+                    component:()=>import("../view/dicValue.vue")
+                }
+            ]
+        }
+    ]
+})
+
+
+router.beforeEach((to,from,next)=>{
+    if(!to.meta.isLogin){
+        let token=window.localStorage.getItem("Jwt")
+        if(!token){
+            token=window.sessionStorage.getItem('Jwt')
+        }
+        if(token){
+            next()
+        }else{
+            window.location.href='/'
+        }
+    }else{
+        next()
+    }
+})
+
+export default router
